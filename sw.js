@@ -1,0 +1,6 @@
+/* Offline PWA cache — version 1 */
+const CACHE='nova-rozfood-offline-v1';
+const ASSETS=['./','./index.html','./nova.html','./rozfood.html','./concept.webp','./apple-touch-icon.png','./manifest.webmanifest'];
+self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.addAll(ASSETS);await self.skipWaiting()})())});
+self.addEventListener('activate',event=>{event.waitUntil((async()=>{const names=await caches.keys();await Promise.all(names.filter(n=>n.startsWith('nova-rozfood-offline-')&&n!==CACHE).map(n=>caches.delete(n)));await self.clients.claim()})())});
+self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET'||new URL(req.url).origin!==self.location.origin)return;event.respondWith((async()=>{const cache=await caches.open(CACHE);const match=await cache.match(req,{ignoreSearch:true});if(match)return match;try{const response=await fetch(req);if(response.ok&&new URL(req.url).pathname.startsWith(new URL(self.registration.scope).pathname))cache.put(req,response.clone());return response}catch{return (req.mode==='navigate'?await cache.match('./index.html'):undefined)||Response.error()}})())});
