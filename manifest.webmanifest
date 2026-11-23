@@ -1,0 +1,17 @@
+{
+  "name": "Реквізити · Нова пошта / ROZFOOD",
+  "short_name": "Реквізити",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0c1013",
+  "theme_color": "#0c1013",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
